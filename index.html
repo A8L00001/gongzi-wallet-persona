@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>工资去哪儿了？— 打工人钱包人格测试 | TRAE 1024 代码盲盒挑战</title>
+<meta name="description" content="8 道真实职场情景题，1 分钟测出你的钱包人格：月光冲锋员 / 存钱守护者 / 涨薪谈判王 / 财富规划师。纯前端、本地运行、无后端、无需登录。" />
+<meta name="theme-color" content="#FFE84A" />
+<link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+<a class="skip-link" href="#main">跳到主内容</a>
+
+<!-- 背景几何装饰 -->
+<div class="bg-decor" aria-hidden="true">
+  <span class="shape shape--circle"></span>
+  <span class="shape shape--square"></span>
+  <span class="shape shape--tri"></span>
+  <span class="shape shape--pill"></span>
+  <span class="shape shape--cross"></span>
+</div>
+
+<!-- 全屏彩纸画布 -->
+<canvas id="fx-canvas" class="fx-canvas" aria-hidden="true"></canvas>
+
+<header class="topbar">
+  <div class="brand">
+    <span class="brand__coin" aria-hidden="true">¥</span>
+    <span class="brand__text">工资去哪儿了？</span>
+  </div>
+  <div class="topbar__right">
+    <span class="brand__chip">TRAE 1024 代码盲盒挑战</span>
+    <span class="egg-badge" id="egg-badge" hidden>1024 彩蛋已解锁</span>
+  </div>
+</header>
+
+<main class="app-shell" id="main">
+
+  <!-- ==================== 首页 ==================== -->
+  <section class="page is-active" id="page-home" aria-labelledby="home-title">
+    <div class="hero">
+      <div class="hero__left">
+        <p class="hero__kicker">打工人钱包人格测试 · 娱乐向</p>
+        <h1 class="hero-title" id="home-title">
+          <span class="hero-title__line">
+            <span class="char" style="--c:var(--pink)">工</span><span class="char" style="--c:var(--pink)">资</span><span class="char" style="--c:var(--blue)">去</span><span class="char" style="--c:var(--blue)">哪</span><span class="char" style="--c:var(--purple)">儿</span><span class="char" style="--c:var(--purple)">了</span><span class="char" style="--c:var(--green)">？</span>
+          </span>
+          <span class="hero-title__sub">打工人钱包人格测试</span>
+        </h1>
+        <p class="hero__desc">
+          工资到账的 24 小时里，你到底做了什么？<br />
+          8 道职场情景题，测出你的钱包人格 —— 以及钱是怎么消失的。
+        </p>
+
+        <ul class="meta-chips">
+          <li class="chip chip--pink">耗时约 1 分钟</li>
+          <li class="chip chip--blue">4 种钱包人格</li>
+          <li class="chip chip--green" id="chip-count">8 道情景题</li>
+          <li class="chip chip--purple">本地记录 · 无需登录</li>
+        </ul>
+
+        <div class="hero__actions">
+          <button class="btn btn--primary btn--lg" id="btn-start" type="button">
+            开始测试<span class="btn__spark" aria-hidden="true">→</span>
+          </button>
+          <button class="btn btn--ghost btn--lg" id="btn-last" type="button" hidden>查看上次结果</button>
+        </div>
+
+        <div class="last-result" id="last-result" hidden>
+          <span class="last-result__label">上次的钱包人格</span>
+          <strong class="last-result__value" id="last-result-text">—</strong>
+          <button class="link-btn" id="btn-clear-last" type="button">清除本地记录</button>
+        </div>
+      </div>
+
+      <div class="hero__right">
+        <div class="hero-visual" aria-hidden="true">
+          <div class="coin coin--xl"><span class="coin__symbol">¥</span></div>
+          <div class="coin coin--float coin--float-a"><span>¥</span></div>
+          <div class="coin coin--float coin--float-b"><span>¥</span></div>
+          <div class="coin coin--float coin--float-c"><span>¥</span></div>
+          <div class="banknote">
+            <span class="banknote__text">工资到账 +1</span>
+          </div>
+          <div class="sticker sticker--pink">1 分钟测完</div>
+          <div class="sticker sticker--blue">无对错答案</div>
+          <div class="sticker sticker--green">有彩蛋</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="marquee" aria-hidden="true">
+      <div class="marquee__track">
+        <span>工资到账</span><span class="dot">●</span><span>购物车清空</span><span class="dot">●</span><span>存钱上瘾</span><span class="dot">●</span><span>涨薪谈判</span><span class="dot">●</span><span>周五加班</span><span class="dot">●</span><span>年终奖到账</span><span class="dot">●</span><span>跳槽还是躺平</span><span class="dot">●</span><span>意外之财</span><span class="dot">●</span>
+        <span>工资到账</span><span class="dot">●</span><span>购物车清空</span><span class="dot">●</span><span>存钱上瘾</span><span class="dot">●</span><span>涨薪谈判</span><span class="dot">●</span><span>周五加班</span><span class="dot">●</span><span>年终奖到账</span><span class="dot">●</span><span>跳槽还是躺平</span><span class="dot">●</span><span>意外之财</span><span class="dot">●</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== 答题页 ==================== -->
+  <section class="page" id="page-quiz" aria-labelledby="q-text">
+    <div class="quiz-head">
+      <div class="progress" role="progressbar" id="progress" aria-valuemin="0" aria-valuemax="8" aria-valuenow="0" aria-label="答题进度">
+        <span class="progress__fill" id="progress-fill"></span>
+      </div>
+      <div class="quiz-head__meta">
+        <span class="chip chip--purple" id="quiz-scene">工资到账</span>
+        <span class="progress__num" id="progress-num">1 / 8</span>
+      </div>
+    </div>
+
+    <div class="quiz-card" id="quiz-card">
+      <p class="q-index">Q<span id="q-num">1</span></p>
+      <h2 class="q-text" id="q-text">题目加载中…</h2>
+      <div class="options" id="options" role="radiogroup" aria-labelledby="q-text"></div>
+      <p class="q-note" id="q-note">凭直觉选，别想太久 —— 想太久说明你已经输了。</p>
+    </div>
+
+    <div class="quiz-nav">
+      <button class="btn btn--ghost" id="btn-prev" type="button">← 上一题</button>
+      <button class="btn btn--primary" id="btn-next" type="button">下一题 →</button>
+    </div>
+  </section>
+
+  <!-- ==================== 结果页 ==================== -->
+  <section class="page" id="page-result" aria-labelledby="result-name">
+    <div class="result-hero">
+      <p class="result-kicker">你的钱包人格是</p>
+      <h2 class="result-name" id="result-name">—</h2>
+      <p class="result-tagline" id="result-tagline">—</p>
+      <div class="result-sticker" id="result-sticker" aria-hidden="true">月</div>
+    </div>
+
+    <div class="result-grid">
+      <div class="card card--radar">
+        <h3 class="card__title">四维钱包雷达</h3>
+        <canvas id="radar-canvas" class="radar-canvas" width="720" height="720" role="img" aria-label="四种钱包人格得分雷达图"></canvas>
+        <ul class="score-list" id="score-list"></ul>
+        <p class="tie-note" id="tie-note" hidden></p>
+      </div>
+
+      <div class="card card--analysis">
+        <h3 class="card__title">趣味分析</h3>
+        <p class="analysis-text" id="analysis-text">—</p>
+        <div class="trait-chips" id="trait-chips"></div>
+      </div>
+    </div>
+
+    <div class="card card--tips">
+      <h3 class="card__title">给你的三条建议</h3>
+      <ol class="tips" id="tips"></ol>
+    </div>
+
+    <div class="card card--quote">
+      <span class="quote-mark" aria-hidden="true">“</span>
+      <p class="quote-text" id="quote-text">—</p>
+      <span class="quote-from">打工人工资金句</span>
+    </div>
+
+    <div class="card card--share">
+      <h3 class="card__title">生成你的结果海报</h3>
+      <label class="field">
+        <span class="field__label">给自己起个昵称（会印在海报上，最多 12 个字）</span>
+        <input class="field__input" id="nickname-input" type="text" maxlength="12" placeholder="例如：摸鱼特工·小王" autocomplete="nickname" />
+      </label>
+      <div class="share-actions">
+        <button class="btn btn--primary" id="btn-poster" type="button">生成海报</button>
+        <button class="btn btn--ghost" id="btn-copy-share" type="button">复制分享文案</button>
+      </div>
+      <div class="share-actions share-actions--sub">
+        <button class="btn btn--mini" id="btn-restart" type="button">重新测试</button>
+        <button class="btn btn--mini btn--ghost" id="btn-home" type="button">回到首页</button>
+      </div>
+      <p class="share-tip">海报在本地用 Canvas 绘制并导出 PNG，不会上传任何数据。</p>
+    </div>
+
+    <p class="disclaimer">
+      ⚠️ 这是一个<b>娱乐性测试</b>：结果完全由你刚才 8 次点击计算得出，不代表你真实的收入水平、经济状况或理财能力，也不构成任何理财、职业或投资建议。
+    </p>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <p>© 2026 工资去哪儿了？· TRAE 1024 代码盲盒挑战参赛作品 · 纯前端本地运行</p>
+  <p class="egg-hint">隐藏关卡提示：在键盘上依次敲出 <strong>1024</strong> ……</p>
+</footer>
+
+<!-- 提示条 -->
+<div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+
+<!-- 海报弹窗 -->
+<div class="modal" id="poster-modal" role="dialog" aria-modal="true" aria-labelledby="poster-title" hidden>
+  <div class="modal__backdrop" data-close="poster"></div>
+  <div class="modal__panel modal__panel--poster">
+    <h3 class="modal__title" id="poster-title">你的钱包人格海报</h3>
+    <div class="poster-frame">
+      <img id="poster-preview" alt="包含昵称与钱包人格测试结果的海报" />
+    </div>
+    <div class="modal__actions">
+      <button class="btn btn--primary" id="poster-download" type="button">下载 PNG</button>
+      <button class="btn btn--ghost" data-close="poster" type="button">关闭</button>
+    </div>
+  </div>
+</div>
+
+<!-- 1024 彩蛋弹窗 -->
+<div class="modal" id="egg-modal" role="dialog" aria-modal="true" aria-labelledby="egg-title" hidden>
+  <div class="modal__backdrop" data-close="egg"></div>
+  <div class="modal__panel modal__panel--egg">
+    <div class="binary-rain" aria-hidden="true">
+      <span>01001000</span><span>10101010</span><span>01101001</span><span>1024</span><span>11000010</span><span>01000001</span>
+    </div>
+    <p class="egg-kicker">1024 · 程序员节隐藏关卡</p>
+    <h3 class="egg-title" id="egg-title">你解锁了第 5 种钱包人格</h3>
+    <div class="egg-persona">
+      <span class="egg-persona__badge" id="egg-persona-badge" aria-hidden="true">1024</span>
+      <p class="egg-persona__name" id="egg-persona-name">全栈暴富体</p>
+      <p class="egg-persona__desc" id="egg-persona-desc">加载中…</p>
+    </div>
+    <p class="egg-quote" id="egg-quote">—</p>
+    <p class="egg-foot">彩蛋已记录在本地，结果页会多一枚 1024 徽章。</p>
+    <button class="btn btn--primary" data-close="egg" type="button">收下彩蛋</button>
+  </div>
+</div>
+
+<noscript>
+  <p class="noscript">这个测试需要 JavaScript 才能运行，请在浏览器设置中开启后再试。</p>
+</noscript>
+
+<script src="js/questions.js"></script>
+<script src="js/personas.js"></script>
+<script src="js/score.js"></script>
+<script src="js/radar.js"></script>
+<script src="js/poster.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
